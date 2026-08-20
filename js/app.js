@@ -1,0 +1,189 @@
+document.addEventListener('DOMContentLoaded', function() {
+
+  var categoriesData = [
+    { id: "all", label: "Todos los libros", icon: "📚" },
+    { id: "suspenso", label: "Suspenso", icon: "🕵️" },
+    { id: "terror", label: "Terror", icon: "👻" },
+    { id: "ciencia-ficcion", label: "Ciencia Ficción", icon: "🚀" },
+    { id: "romance", label: "Romance", icon: "💖" },
+    { id: "desarrollo", label: "Desarrollo", icon: "⚡" }
+  ];
+
+  var booksData = [
+    { id:"book-1", title:"Atomic Habits", author:"James Clear", category:"desarrollo", cover:"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=400", story:"Había una vez un pequeño cambio que decidió repetirse cada mañana. Al principio, nadie notó su presencia, pero con el tiempo se convirtió en un hábito atómico, transformándolo todo a su alrededor..." },
+    { id:"book-2", title:"Deep Work", author:"Cal Newport", category:"desarrollo", cover:"https://images.unsplash.com/photo-1589998059171-988d887df646?q=80&w=400", story:"En un mundo lleno de notificaciones intermitentes, un programador cerró todas sus pestañas y se sumergió en el trabajo profundo. Fue allí, en el silencio absoluto, donde nacieron las grandes ideas..." },
+    { id:"book-3", title:"Clean Code", author:"Robert C. Martin", category:"desarrollo", cover:"https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=400", story:"El código limpio no es solo sintaxis corregida; es poesía para máquinas. Aquel desarrollador sabía que escribir un código comprensible era un acto de respeto hacia el próximo humano que leyera sus líneas..." },
+    { id:"book-4", title:"The Psychology of Money", author:"Morgan Housel", category:"desarrollo", cover:"https://images.unsplash.com/photo-1532012197367-e338421e2eca?q=80&w=400", story:"La psicología del dinero nos enseña que la riqueza no es lo que compras, sino las opciones y la libertad que conservas. No se trata de inteligencia pura, sino de controlar tus propios impulsos cotidianos..." },
+    { id:"book-13", title:"The Pragmatic Programmer", author:"Andy Hunt", category:"desarrollo", cover:"https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?q=80&w=400", story:"El programador pragmático nunca asume que las cosas funcionan solo porque compilan. Viaja ligero, automatiza lo repetitivo, cuida su entorno de trabajo y siempre, siempre mantiene viva su curiosidad..." },
+    { id:"book-14", title:"Soft Skills", author:"John Sonmez", category:"desarrollo", cover:"https://images.unsplash.com/photo-1516414447565-b14be0adf13e?q=80&w=400", story:"Más allá de los algoritmos se encuentran las habilidades blandas. Aprender a escuchar, comunicar y empatizar resultó ser el código secreto más potente para liderar los proyectos tecnológicos del mañana..." },
+    { id:"book-5", title:"El Principito", author:"Antoine de Saint-Exupéry", category:"romance", cover:"https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=400", story:"Vivía en un asteroide apenas más grande que él, cuidando de su rosa caprichosa. Un buen día, el Principito decidió explorar otros mundos para comprender qué era aquello tan invisible a los ojos de los adultos..." },
+    { id:"book-6", title:"Sapiens", author:"Yuval Noah Harari", category:"ciencia-ficcion", cover:"https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=400", story:"Desde insignificantes simios en un rincón de África hasta convertirnos en los gobernantes indiscutibles del planeta Tierra. Sapiens explora cómo los mitos compartidos crearon imperios interconectados..." },
+    { id:"book-7", title:"El Psicoanalista", author:"John Katzenbach", category:"suspenso", cover:"https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=400", story:"El día de su cumpleaños número cincuenta, el psicoanalista recibió una carta firmada por un antiguo paciente anónimo: 'Bienvenido al primer día de su muerte. Tiene quince días para descubrir quién soy'..." },
+    { id:"book-8", title:"La Chica del Tren", author:"Paula Hawkins", category:"suspenso", cover:"https://images.unsplash.com/photo-1587876931567-564ce588bfbd?q=80&w=400", story:"Ella miraba por la ventana del tren cada mañana, imaginando vidas perfectas para los desconocidos de las casas de la vía. Hasta que un día, un parpadeo fugaz la convirtió en testigo de un misterio atroz..." },
+    { id:"book-15", title:"Código Da Vinci", author:"Dan Brown", category:"suspenso", cover:"https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=400", story:"Un cadáver en el Museo del Louvre y una serie de extraños símbolos ocultos en las pinturas de Leonardo da Vinci desatan una frenética carrera para proteger el secreto mejor guardado de la humanidad..." },
+    { id:"book-16", title:"Ángeles y Demonios", author:"Dan Brown", category:"suspenso", cover:"https://images.unsplash.com/photo-1629992101753-56d196c8aabb?q=80&w=400", story:"Ángeles y Demonios se enfrentan en los pasillos secretos del Vaticano. Una antigua hermandad resurrecha amenaza con destruir la ciudad entera usando una sustancia científica devastadora..." },
+    { id:"book-9", title:"It (Eso)", author:"Stephen King", category:"terror", cover:"https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=400", story:"Bajo las calles del pequeño pueblo de Derry, algo milenario despierta cada veintisiete años adoptando la forma de tus peores pesadillas. Un grupo de niños se une para enfrentar su terror más profundo..." },
+    { id:"book-10", title:"Drácula", author:"Bram Stoker", category:"terror", cover:"https://images.unsplash.com/photo-1618666012174-83b441c0bc76?q=80&w=400", story:"A través de las brumas transilvanas, el Conde Drácula aguarda en su castillo de sombras. Un viaje marítimo llevará la maldición eterna de la sangre directo a las costas del Londres victoriano..." },
+    { id:"book-virtual", title:"El Fantasma de la Ópera", author:"Gaston Leroux", category:"terror", cover:"https://images.unsplash.com/photo-1514894780887-121968d00567?q=80&w=400", story:"Aquella noche, la Ópera de París estaba envuelta en un aire de misterio inusitado. Los carruajes se amontonaban frente a la imponente fachada... Christine Daaé escuchaba una voz hermosa y melodiosa a través de las paredes: 'El Ángel de la Música te ha elegido'..." },
+    { id:"book-17", title:"El Resplandor", author:"Stephen King", category:"terror", cover:"https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=400", story:"El hotel Overlook cierra sus puertas durante el crudo invierno. En su interior solitario, las paredes susurran antiguas tragedias y la mente de su cuidador comienza a perderse en el laberinto del resplandor..." },
+    { id:"book-11", title:"Dune", author:"Frank Herbert", category:"ciencia-ficcion", cover:"https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=400", story:"En el vasto y desértico planeta Arrakis, la especia debe fluir a cualquier costo. Paul Atreides se embarca en un destino profético entre las dunas para cambiar las riendas del universo entero..." },
+    { id:"book-18", title:"Yo, Robot", author:"Isaac Asimov", category:"ciencia-ficcion", cover:"https://images.unsplash.com/photo-1546776310-eef45dd6d63c?q=80&w=400", story:"Las tres leyes de la robótica parecían perfectas e inquebrantables. Sin embargo, la evolución de la inteligencia artificial plantea preguntas donde la línea entre el metal y el alma se vuelve difusa..." },
+    { id:"book-19", title:"Neuromante", author:"William Gibson", category:"ciencia-ficcion", cover:"https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=400", story:"En el cielo tecnológico sobre Chiba, un hacker informático sin opciones se conecta a la red neuronal del Neuromante. Una última misión en la matrix para recuperar su vida o perderse en los datos..." },
+    { id:"book-12", title:"Orgullo y Prejuicio", author:"Jane Austen", category:"romance", cover:"https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400", story:"No hay distancias cuando el orgullo cede y los prejuicios se desvanecen. Elizabeth Bennet y el señor Darcy descubren que las primeras impresiones rara vez muestran el verdadero valor del corazón..." },
+    { id:"book-20", title:"Bajo la misma estrella", author:"John Green", category:"romance", cover:"https://images.unsplash.com/photo-1474552226712-ac0f0961a954?q=80&w=400", story:"A pesar de las estrellas adversas y los diagnósticos médicos complicados, la vida florece con una intensidad brillante cuando dos jóvenes deciden compartir sus infinitos días contados..." },
+    { id:"book-21", title:"Cumbres Borrascosas", author:"Emily Brontë", category:"romance", cover:"https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=400", story:"En los páramos desolados y azotados por el viento de Cumbres Borrascosas, un amor apasionado y destructivo se gesta a través de las generaciones, desafiando las convenciones sociales y el tiempo..." }
+  ];
+
+  // AUTH
+  var usuariosRegistrados = { "admin": "1234" };
+  var loginBox = document.getElementById('login-box');
+  var registerBox = document.getElementById('register-box');
+
+  document.querySelectorAll('.auth-toggle span').forEach(function(span) {
+    span.addEventListener('click', function() {
+      loginBox.classList.toggle('hidden');
+      registerBox.classList.toggle('hidden');
+      document.getElementById('error-message').style.display = 'none';
+      document.getElementById('reg-success-message').style.display = 'none';
+    });
+  });
+
+  registerBox.querySelector('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var user = document.getElementById('reg-username').value.trim();
+    var pass = document.getElementById('reg-password').value;
+    var msg = document.getElementById('reg-success-message');
+    if (user && pass) {
+      usuariosRegistrados[user] = pass;
+      msg.style.display = 'block';
+      registerBox.querySelector('form').reset();
+      setTimeout(function() {
+        loginBox.classList.toggle('hidden');
+        registerBox.classList.toggle('hidden');
+        msg.style.display = 'none';
+      }, 1500);
+    }
+  });
+
+  loginBox.querySelector('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var userInput = document.getElementById('username').value.trim();
+    var passInput = document.getElementById('password').value;
+    var errorMsg = document.getElementById('error-message');
+    if (usuariosRegistrados[userInput] && usuariosRegistrados[userInput] === passInput) {
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('main-content').classList.remove('hidden');
+    } else {
+      errorMsg.style.display = 'block';
+    }
+  });
+
+  // BOOKS
+  var currentCategory = 'all';
+  var categoryContainer = document.getElementById('category-list');
+  var bookGrid = document.getElementById('main-catalog');
+  var searchInput = document.getElementById('search-input');
+
+  categoriesData.forEach(function(cat) {
+    var btn = document.createElement('button');
+    btn.className = 'category-btn' + (cat.id === 'all' ? ' active' : '');
+    btn.textContent = cat.icon + ' ' + cat.label;
+    btn.addEventListener('click', function() {
+      currentCategory = cat.id;
+      categoryContainer.querySelectorAll('.category-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      applyFilter();
+    });
+    categoryContainer.appendChild(btn);
+  });
+
+  booksData.forEach(function(book) {
+    var article = document.createElement('article');
+    article.className = 'book-card';
+    article.id = book.id;
+    article.dataset.category = book.category;
+    article.innerHTML =
+      '<div class="cover-wrapper">' +
+        '<span class="status-badge status-available">Disponible</span>' +
+        '<img src="' + book.cover + '" class="cover-img" alt="' + book.title + '">' +
+      '</div>' +
+      '<div class="book-details">' +
+        '<h3 class="book-title">' + book.title + '</h3>' +
+        '<p class="book-author">' + book.author + '</p>' +
+      '</div>' +
+      '<button class="btn-read">📖 Leer Online</button>' +
+      '<button class="btn-loan state-available">Solicitar Préstamo</button>';
+    bookGrid.appendChild(article);
+  });
+
+  // FILTER
+  function applyFilter() {
+    var query = searchInput.value.toLowerCase().trim();
+    bookGrid.querySelectorAll('.book-card').forEach(function(card) {
+      var category = card.dataset.category;
+      var title = card.querySelector('.book-title').textContent.toLowerCase();
+      var author = card.querySelector('.book-author').textContent.toLowerCase();
+      var matchCat = currentCategory === 'all' || category === currentCategory;
+      var matchSearch = title.indexOf(query) !== -1 || author.indexOf(query) !== -1;
+      card.style.display = (matchCat && matchSearch) ? 'flex' : 'none';
+    });
+  }
+  searchInput.addEventListener('input', applyFilter);
+
+  // LOAN + READ
+  bookGrid.addEventListener('click', function(e) {
+    var card = e.target.closest('.book-card');
+    if (!card) return;
+
+    if (e.target.classList.contains('btn-read')) {
+      openVirtualBook(card.id);
+    }
+
+    if (e.target.classList.contains('btn-loan')) {
+      var btn = e.target;
+      var badge = card.querySelector('.status-badge');
+      var isBorrowed = card.classList.contains('is-borrowed');
+      if (!isBorrowed) {
+        card.classList.add('is-borrowed');
+        badge.textContent = 'En Préstamo';
+        badge.classList.replace('status-available', 'status-borrowed');
+        btn.textContent = 'Devolver Libro';
+        btn.classList.replace('state-available', 'state-borrowed');
+      } else {
+        card.classList.remove('is-borrowed');
+        badge.textContent = 'Disponible';
+        badge.classList.replace('status-borrowed', 'status-available');
+        btn.textContent = 'Solicitar Préstamo';
+        btn.classList.replace('state-borrowed', 'state-available');
+      }
+    }
+  });
+
+  // READER MODAL
+  function openVirtualBook(bookId) {
+    var book = booksData.find(function(b) { return b.id === bookId; });
+    if (!book) return;
+    document.getElementById('modal-content-pages').innerHTML =
+      '<h1>' + book.title + '</h1>' +
+      '<p style="text-align:center;font-style:italic;color:#64748b;text-indent:0;">Por ' + book.author + '</p>' +
+      '<br>' +
+      '<p><strong>Capítulo I: El Inicio del Viaje</strong></p>' +
+      '<p>' + book.story + '</p>' +
+      '<p>El relato continúa atrapando al lector línea tras línea, recordándonos que cada página abierta es una puerta hacia un universo completamente nuevo y lleno de infinitas sorpresas.</p>';
+    document.getElementById('book-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  document.getElementById('close-book-btn').addEventListener('click', function() {
+    document.getElementById('book-modal').classList.add('hidden');
+    document.body.style.overflow = '';
+  });
+
+  document.getElementById('book-modal').addEventListener('click', function(e) {
+    if (e.target === e.currentTarget) {
+      e.currentTarget.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+  });
+
+});
